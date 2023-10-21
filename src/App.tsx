@@ -1,5 +1,10 @@
 import "./App.css";
 
 export default function App() {
-  return <div className="placeholder">🚛 Nothing here, yet... 🚚</div>;
+  return (
+    <div className="container">
+      <div className="text">Nothing here, yet...</div>
+      <div className="hammer">🔨</div>
+    </div>
+  );
 }

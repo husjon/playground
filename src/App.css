@@ -7,12 +7,70 @@
   color-scheme: dark;
 }
 
-#root {
+#root,
+body {
   height: 100%;
   margin: 0;
+  padding: 0;
 }
 
-.placeholder {
-  font-size: 3em;
-  text-align: center;
+.container {
+  height: 100vh;
+  display: flex;
+  align-items: center;
+
+  .text {
+    flex-grow: 1;
+    text-align: center;
+    font-size: 3em;
+
+    animation-name: text;
+    animation-duration: 1s;
+    animation-iteration-count: infinite;
+  }
+  .hammer {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    margin-top: -0.2em;
+    padding-bottom: 2em;
+    font-size: 3em;
+
+    animation-name: hammer;
+    animation-duration: 1s;
+    animation-iteration-count: infinite;
+  }
+}
+
+@keyframes hammer {
+  0% {
+    transform: rotateZ(0deg);
+  }
+  30% {
+    transform: rotateZ(10deg);
+  }
+  35% {
+    transform: rotateZ(-5deg);
+  }
+  36% {
+    transform: rotateZ(0deg);
+  }
+}
+
+@keyframes text {
+  0% {
+    transform: rotateZ(0deg);
+  }
+  30% {
+    transform: rotateZ(0deg);
+  }
+  31% {
+    transform: rotateZ(1deg);
+  }
+  35% {
+    transform: rotateZ(-1deg);
+  }
+  36% {
+    transform: rotateZ(0deg);
+  }
 }
