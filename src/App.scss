@@ -46,12 +46,13 @@ body,
   .Sidebar {
     grid-area: sidebar;
     display: grid;
-    grid-template-rows: repeat(10, 2em);
+    grid-template-rows: repeat(10, auto) 1fr;
     gap: 0.5em;
     padding-top: 1em;
     overflow: hidden;
 
     .menu-item {
+      font-size: 1.2em;
       display: block;
       $border-color: $color3;
       background-color: adjust-color($color5, $lightness: 10%);
