@@ -1,0 +1,82 @@
+.profiles {
+  display: grid;
+  gap: 24px;
+  margin: 5px;
+
+  .profile-card {
+    --color-gradient: linear-gradient(90deg, #5b6ef8, #6ce4c9);
+    --border-size: 0.25em;
+    --hover-offsets: -3px;
+
+    width: 32em;
+    background: var(--color-gradient);
+    transition: margin 250ms;
+
+    border-radius: 1em;
+    margin-top: var(--border-size);
+    margin-left: var(--border-size);
+
+    &:hover {
+      margin-top: calc(var(--border-size) + var(--hover-offsets));
+      margin-left: calc(var(--border-size) - var(--hover-offsets));
+      margin-bottom: calc(var(--hover-offsets) * -1);
+    }
+
+    .inner {
+      translate: calc(var(--border-size) * -1) calc(var(--border-size) * -1);
+      border-radius: 0.9em;
+      background-color: white;
+      padding: 1em;
+      color: rgb(43, 48, 66);
+
+      display: grid;
+      grid-template-columns: auto 1fr;
+      grid-template-rows: auto 1fr;
+      grid-template-areas:
+        "image info"
+        "nothing bio";
+
+      .image-border {
+        --border-radius: 50%;
+        grid-area: image;
+        height: 4em;
+        background: var(--color-gradient);
+        border-radius: calc(var(--border-radius) + 3%);
+        padding: 0.25em;
+
+        .profile-image {
+          height: 100%;
+          border-radius: var(--border-radius);
+          box-sizing: border-box;
+        }
+      }
+
+      .info {
+        grid-area: info;
+        padding: 1em 0 0 1em;
+
+        .name {
+          margin: 0;
+          font-weight: bold;
+        }
+        .job-title {
+          font-size: 0.8em;
+          margin: 0;
+        }
+      }
+
+      .bio {
+        grid-area: bio;
+        padding: 0 0 0 1em;
+        margin: 0;
+
+        display: grid;
+        gap: 0.5em;
+
+        > * {
+          margin: 0;
+        }
+      }
+    }
+  }
+}
