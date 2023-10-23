@@ -1,0 +1,22 @@
+.TextGradients {
+  > * {
+    margin: 0;
+    background: linear-gradient(#62eeb1, #6065e8);
+    display: inline;
+    margin: 0.25em;
+  }
+
+  font-size: 4rem;
+
+  .gradient1 {
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+  .gradient2 {
+    background-clip: text;
+    -webkit-text-fill-color: #383136;
+    -webkit-text-stroke-color: transparent;
+
+    -webkit-text-stroke: 5px rgba(0, 0, 0, 0);
+  }
+}
