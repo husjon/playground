@@ -11,7 +11,12 @@ export function Sidebar() {
   );
 }
 
-function MenuItem({ to, label, children }) {
+interface MenuItemProps {
+  to: string;
+  label: string;
+}
+
+function MenuItem({ to, label }: MenuItemProps) {
   return (
     <NavLink className="menu-item" to={to}>
       {label}
