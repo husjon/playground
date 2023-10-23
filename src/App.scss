@@ -59,13 +59,14 @@ body,
       color: $color1;
       padding: 0.4em;
       padding-left: 1em;
+      padding-bottom: 0.3em;
       rotate: -5deg;
       translate: -5px;
       width: 100%;
       text-decoration: none;
 
-      transition: border-bottom 100ms;
-      border-bottom: 0 solid $border-color;
+      transition: border-bottom 200ms;
+      border-bottom: 0.3em solid $color5;
 
       &.active {
         border-bottom: 0.3em solid $color4;
