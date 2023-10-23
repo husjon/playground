@@ -5,11 +5,6 @@ import { placeholderBio, randomJobTitle } from "./data";
 export default function ProfileCards() {
   const profiles = [
     {
-      name: "Jon Erling",
-      image: "https://github.com/husjon.png",
-      title: "test",
-    },
-    {
       name: "Nomen Nescio",
       image: "https://i.pravatar.cc/150?img=32",
       title: randomJobTitle(),
@@ -23,6 +18,13 @@ export default function ProfileCards() {
 
   return (
     <div className="profiles">
+      <ProfileCard
+        name="Jon Erling"
+        image="https://github.com/husjon.png"
+        title="Software developer"
+      >
+        Playing around with Typescript, React and CSS.
+      </ProfileCard>
       {profiles.map(({ name, image, title }, i) => (
         <ProfileCard name={name} image={image} title={title} key={i} />
       ))}
