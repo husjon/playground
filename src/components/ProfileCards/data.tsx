@@ -16,7 +16,7 @@ export const randomJobTitle = () =>
 export const placeholderBio = () => {
   const paragraphs = Math.floor(Math.random() * 3) + 1;
   return (
-    <div>
+    <>
       <p>Lorem ipsum, dolor sit amet consectetur adipisicing elit.</p>
       {paragraphs >= 2 && (
         <p>
@@ -26,6 +26,6 @@ export const placeholderBio = () => {
         </p>
       )}
       {paragraphs >= 3 && <p>Hic impedit suscipit blanditiis cumque.</p>}
-    </div>
+    </>
   );
 };
