@@ -1,10 +1,15 @@
-import "./App.css";
+import "./App.scss";
+
+import { Sidebar } from "./components/Sidebar";
+import { Content } from "./components/Content";
+import { Header } from "./components/Header";
 
 export default function App() {
   return (
-    <div className="container">
-      <div className="text">Nothing here, yet...</div>
-      <div className="hammer">🔨</div>
+    <div className="App">
+      <Header />
+      <Sidebar />
+      <Content />
     </div>
   );
 }

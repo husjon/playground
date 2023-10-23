@@ -1,0 +1,85 @@
+@import "https://fonts.googleapis.com/css2?family=Montserrat&display=swap";
+
+$color1: #f1f6f5;
+$color2: #b49a8e;
+$color3: #e1523a;
+$color4: #f18a2b;
+$color5: #383136;
+
+:root {
+  font-family: Montserrat, sans-serif;
+  background-color: $color5;
+  color: $color1;
+}
+a {
+  color: $color1;
+}
+html,
+body,
+#root {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+.App {
+  display: grid;
+  height: 100%;
+
+  grid-template-columns: 10em 1fr;
+  grid-template-rows: 5em auto;
+  grid-template-areas:
+    "none header"
+    "sidebar content";
+
+  .Header {
+    grid-area: header;
+    // background-color: rgba(#302e3c, 1);
+    height: 100%;
+    line-height: 100%;
+    padding-left: 0.5em;
+
+    * {
+      color: $color1;
+    }
+  }
+  .Sidebar {
+    grid-area: sidebar;
+    display: grid;
+    grid-template-rows: repeat(10, 2em);
+    gap: 0.5em;
+    padding-top: 1em;
+    overflow: hidden;
+
+    .menu-item {
+      display: block;
+      $border-color: $color3;
+      background-color: adjust-color($color5, $lightness: 10%);
+      color: $color1;
+      padding: 0.4em;
+      padding-left: 1em;
+      rotate: -5deg;
+      translate: -5px;
+      width: 100%;
+      text-decoration: none;
+
+      transition: border-bottom 100ms;
+      border-bottom: 0 solid $border-color;
+
+      &.active {
+        border-bottom: 0.3em solid $color4;
+        font-weight: bold;
+      }
+      &:hover {
+        border-bottom: 0.3em solid $color3;
+      }
+    }
+  }
+
+  .Content {
+    grid-area: content;
+    // background-color: #302e3c;
+    height: 100%;
+    padding: 1em;
+  }
+}
