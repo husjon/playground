@@ -1,4 +1,4 @@
-import { Link, NavLink } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 
 export function Sidebar() {
   return (
@@ -11,7 +11,12 @@ export function Sidebar() {
   );
 }
 
-function MenuItem({ to, label, children }) {
+interface MenuItemProps {
+  to: string;
+  label: string;
+}
+
+function MenuItem({ to, label }: MenuItemProps) {
   return (
     <NavLink className="menu-item" to={to}>
       {label}
