@@ -26,7 +26,9 @@ export default function ProfileCards() {
         Playing around with Typescript, React and CSS.
       </ProfileCard>
       {profiles.map(({ name, image, title }, i) => (
-        <ProfileCard name={name} image={image} title={title} key={i} />
+        <ProfileCard name={name} image={image} title={title} key={i}>
+          {placeholderBio()}
+        </ProfileCard>
       ))}
     </div>
   );
@@ -39,10 +41,6 @@ interface ProfileCardProps {
   children?: ReactNode;
 }
 function ProfileCard({ name, title, image, children }: ProfileCardProps) {
-  if (!name) name = "Nomen Nescio";
-  if (!title) title = randomJobTitle();
-  if (!children) children = placeholderBio();
-
   return (
     <div className="profile-card">
       <div className="inner">
