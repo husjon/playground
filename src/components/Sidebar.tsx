@@ -5,6 +5,7 @@ export function Sidebar() {
     <>
       <div className="Sidebar">
         <MenuItem to="/" label="Home" />
+        <MenuItem to="/profile-cards" label="profile-cards" />
       </div>
     </>
   );
