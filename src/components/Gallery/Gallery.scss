@@ -21,11 +21,12 @@
       width: 100%;
       user-select: none;
     }
-    &:hover {
-      background-color: rgba($color: #000, $alpha: 0.1);
-      color: rgba($color: #fff, $alpha: 0.25);
-    }
   }
+  &:hover > .directions {
+    background-color: rgba($color: #000, $alpha: 0.05);
+    color: rgba($color: #fff, $alpha: 0.25);
+  }
+
   .left {
     left: 0;
   }
