@@ -19,6 +19,9 @@ jobs:
       packages: write
       contents: read
 
+    outputs:
+      IMAGE_URL: ${{ steps.push_image.outputs.IMAGE_URL }}
+
     steps:
       - uses: actions/checkout@v4
 
@@ -29,6 +32,7 @@ jobs:
         run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u $ --password-stdin
 
       - name: Push image
+        id: push_image
         run: |
           IMAGE_ID=ghcr.io/${{ github.repository_owner }}/$IMAGE_NAME
 
@@ -44,8 +48,7 @@ jobs:
           echo VERSION=$VERSION
 
 
-          IMAGE_URL=ghcr.io/${{ github.repository_owner }}/$IMAGE_NAME:$VERSION
-          echo IMAGE_URL=$IMAGE_URL | tee -a $GITHUB_ENV
+          echo "IMAGE_URL='ghcr.io/${{ github.repository_owner }}/$IMAGE_NAME:$VERSION'" | tee -a $GITHUB_OUTPUT
           docker tag $IMAGE_NAME $IMAGE_ID:$VERSION
           docker push $IMAGE_ID:$VERSION
 
@@ -66,5 +69,5 @@ jobs:
           ssh ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} "
             echo \"${{ secrets.GITHUB_TOKEN }}\" | sudo docker login ghcr.io -u $ --password-stdin; \
             sudo docker rm playground2; \
-            sudo docker run --name $IMAGE_NAME ${{ env.IMAGE_URL }}
+            sudo docker run --name $IMAGE_NAME ${{ needs.build.outputs.IMAGE_URL }}
           "
