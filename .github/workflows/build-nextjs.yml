@@ -56,8 +56,8 @@ jobs:
         run: |
           IMAGE_ID=ghcr.io/${{ github.repository_owner }}/$IMAGE_NAME
 
-          ssh ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} '
-            echo "${{ secrets.GITHUB_TOKEN }}" | sudo docker login ghcr.io -u $ --password-stdin; \
+          ssh ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} "
+            echo \"${{ secrets.GITHUB_TOKEN }}\" | sudo docker login ghcr.io -u $ --password-stdin; \
             sudo docker rm playground2; \
             sudo docker run --name $IMAGE_NAME $IMAGE_ID
-          '
+          "
