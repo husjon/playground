@@ -1,5 +1,19 @@
-@import "https://fonts.googleapis.com/css2?family=Montserrat&display=swap";
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+// @import "https://fonts.googleapis.com/css2?family=Montserrat&display=swap";
 @import "./colors.scss";
+
+h1 {
+  font-size: 2rem;
+}
+h2 {
+  font-size: 1.5rem;
+}
+h3 {
+  font-size: 1.25rem;
+}
 
 :root {
   font-family: Montserrat, sans-serif;
@@ -29,15 +43,15 @@ body,
 
   .Header {
     grid-area: header;
-    // background-color: rgba(#302e3c, 1);
     height: 100%;
     line-height: 100%;
     padding-left: 0.5em;
 
-    * {
-      color: $color1;
-    }
+    // * {
+    //   color: $color1;
+    // }
   }
+
   .Sidebar {
     grid-area: sidebar;
     display: grid;

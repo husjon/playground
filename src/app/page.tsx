@@ -1,4 +1,4 @@
-export function LandingPage() {
+export default function Page() {
   return (
     <div className="LandingPage">
       <p>Hi there and welcome to my little playground.</p>
