@@ -61,3 +61,23 @@ jobs:
             sudo docker rm playground2; \
             sudo docker run --name $IMAGE_NAME $IMAGE_ID
           "
+
+
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: install ssh keys
+        run: |
+          install -m 600 -D /dev/null ~/.ssh/id_rsa
+          echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
+          ssh-keyscan -H ${{ secrets.SSH_HOST }} > ~/.ssh/known_hosts
+
+      - name: deploy container
+        run: |
+          IMAGE_ID=ghcr.io/${{ github.repository_owner }}/$IMAGE_NAME
+
+          ssh ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} "
+            echo \"${{ secrets.GITHUB_TOKEN }}\" | sudo docker login ghcr.io -u $ --password-stdin; \
+            sudo docker rm playground2; \
+            sudo docker run --name $IMAGE_NAME $IMAGE_ID
+          "
