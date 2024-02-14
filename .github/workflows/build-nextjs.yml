@@ -11,6 +11,7 @@ on:
 
 env:
   IMAGE_NAME: playground2
+  IMAGE_URL: NOT_SET
 
 jobs:
   build:
@@ -20,7 +21,7 @@ jobs:
       contents: read
 
     outputs:
-      IMAGE_URL: ${{ steps.push_image.outputs.IMAGE_URL }}
+      IMAGE_URL: ${{ steps.setup_variables.outputs.IMAGE_URL }}
 
     steps:
       - uses: actions/checkout@v4
@@ -35,18 +36,31 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
+      - name: Setup variables
+        id: setup_variables
+        run: |
+          IMAGE_ID=ghcr.io/${{ github.repository_owner }}/$IMAGE_NAME
+
+          # This changes all uppercase characters to lowercase.
+          IMAGE_ID=$(echo $IMAGE_ID | tr '[A-Z]' '[a-z]')
+          # This strips the git ref prefix from the version.
+          VERSION=$(echo "${{ github.ref }}" | sed -e 's,.*/\(.*\),\1,')
+          # This strips the "v" prefix from the tag name.
+          [[ "${{ github.ref }}" == "refs/tags/"* ]] && VERSION=$(echo $VERSION | sed -e 's/^v//')
+          # This uses the Docker `latest` tag convention.
+          [ "$VERSION" == "main" ] && VERSION=latest
+
+          echo "IMAGE_URL=ghcr.io/${{ github.repository_owner }}/$IMAGE_NAME:$VERSION" | tee -a $GITHUB_ENV
+          echo "IMAGE_URL=ghcr.io/${{ github.repository_owner }}/$IMAGE_NAME:$VERSION" | tee -a $GITHUB_OUTPUT
+
       - name: Build and push by digest
         id: build
         uses: docker/build-push-action@v5
         with:
           context: .
           platforms: linux/arm64
-          outputs: type=image,name=${{ env.IMAGE_NAME }},push-by-digest=true,name-canonical=true,push=true
-
-
-          # echo "IMAGE_URL='ghcr.io/${{ github.repository_owner }}/$IMAGE_NAME:$VERSION'" | tee -a $GITHUB_OUTPUT
-          # docker tag $IMAGE_NAME $IMAGE_ID:$VERSION
-          # docker push $IMAGE_ID:$VERSION
+          push: true
+          tags:  ${{ env.IMAGE_URL }}
 
 
   deploy:
