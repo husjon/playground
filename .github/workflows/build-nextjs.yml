@@ -81,5 +81,5 @@ jobs:
           ssh ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} "
             echo \"${{ secrets.GITHUB_TOKEN }}\" | sudo docker login ghcr.io -u $ --password-stdin; \
             sudo docker rm playground2; \
-            sudo docker run --name $IMAGE_NAME ${{ needs.build.outputs.IMAGE_URL }}
+            sudo docker run --name $IMAGE_NAME --platform linux/arm64 ${{ needs.build.outputs.IMAGE_URL }}
           "
