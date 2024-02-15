@@ -8,13 +8,6 @@ export function Sidebar() {
       <div className="Sidebar">
         <MenuItem to="/" label="Home" />
         <MenuItem to="/profile-cards" label="profile-cards" />
-        <MenuItem to="/pagination" label="pagination" />
-        <MenuItem
-          to="/wave-function-collapse"
-          label="WFC"
-          tooltip="Wave Function Collapse"
-        />
-        <MenuItem to="/sorting-algorithms" label="Sorting algorithms" />
       </div>
     </>
   );
