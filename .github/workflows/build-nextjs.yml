@@ -10,8 +10,7 @@ on:
     branches: ["nextjs"]
 
 env:
-  IMAGE_NAME: playground2
-  IMAGE_URL: NOT_SET
+  app_name: playground2
 
 jobs:
   build:
@@ -37,14 +36,15 @@ jobs:
         run: |
           rsync -av --delete-before \
             .next/standalone/ \
-            ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:apps/playground2/
+            ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:apps/${{ env.app_name }}/
           rsync -av \
             .next/static/ \
-            ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:apps/playground2/.next/static/
+            ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:apps/${{ env.app_name }}/.next/static/
 
-      # - name: start container
-      #   run: |
-      #     ssh ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} '
-      #       sudo docker stop playground; \
-      #       sudo docker rm playground; \
-      #       sudo docker run --name playground -ti -d --volume "`pwd`/apps/playground:/usr/share/nginx/html" nginx:alpine'
+      - name: start container
+        run: |
+          ssh ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} '
+            sudo docker stop ${{ env.app_name }}; \
+            sudo docker rm ${{ env.app_name }}; \
+            sudo docker run --name ${{ env.app_name }} -ti -d --volume "`pwd`/apps/${{ env.app_name }}:/app" --workdir /app --expose 3000 node:18-alpine server.js
+          '
