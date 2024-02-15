@@ -16,70 +16,35 @@ env:
 jobs:
   build:
     runs-on: ubuntu-latest
-    permissions:
-      packages: write
-      contents: read
-
-    outputs:
-      IMAGE_URL: ${{ steps.setup_variables.outputs.IMAGE_URL }}
 
     steps:
-      - uses: actions/checkout@v4
-
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v3
+      - uses: actions/checkout@v3
+      - name: Use Node.js 18.x
+        uses: actions/setup-node@v3
         with:
-          platforms: linux/arm64
+          node-version: 18.x
+          cache: "npm"
+      - run: npm ci
+      - run: npm run build --if-present
 
-      - name: Login to GitHub Container Registry
-        uses: docker/login-action@v3
-        with:
-          registry: ghcr.io
-          username: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Setup variables
-        id: setup_variables
-        run: |
-          IMAGE_ID=ghcr.io/${{ github.repository_owner }}/$IMAGE_NAME
-
-          # This changes all uppercase characters to lowercase.
-          IMAGE_ID=$(echo $IMAGE_ID | tr '[A-Z]' '[a-z]')
-          # This strips the git ref prefix from the version.
-          VERSION=$(echo "${{ github.ref }}" | sed -e 's,.*/\(.*\),\1,')
-          # This strips the "v" prefix from the tag name.
-          [[ "${{ github.ref }}" == "refs/tags/"* ]] && VERSION=$(echo $VERSION | sed -e 's/^v//')
-          # This uses the Docker `latest` tag convention.
-          [ "$VERSION" == "main" ] && VERSION=latest
-
-          echo "IMAGE_URL=ghcr.io/${{ github.repository_owner }}/$IMAGE_NAME:$VERSION" | tee -a $GITHUB_ENV
-          echo "IMAGE_URL=ghcr.io/${{ github.repository_owner }}/$IMAGE_NAME:$VERSION" | tee -a $GITHUB_OUTPUT
-
-      - name: Build and push by digest
-        id: build
-        uses: docker/build-push-action@v5
-        with:
-          context: .
-          platforms: linux/arm64
-          push: true
-          tags:  ${{ env.IMAGE_URL }}
-
-
-  deploy:
-    needs: build
-    runs-on: ubuntu-latest
-    steps:
       - name: install ssh keys
         run: |
           install -m 600 -D /dev/null ~/.ssh/id_rsa
           echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
           ssh-keyscan -H ${{ secrets.SSH_HOST }} > ~/.ssh/known_hosts
 
-      - name: deploy container
+      - name: upload
         run: |
+          rsync -av --delete-before \
+            .next/standalone/ \
+            ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:apps/playground2/
+          rsync -av \
+            .next/static/ \
+            ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:apps/playground2/.next/static/
 
-          ssh ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} "
-            echo \"${{ secrets.GITHUB_TOKEN }}\" | sudo docker login ghcr.io -u $ --password-stdin; \
-            sudo docker rm playground2; \
-            sudo docker run --detach --name $IMAGE_NAME --platform linux/arm64 ${{ needs.build.outputs.IMAGE_URL }}
-          "
+      # - name: start container
+      #   run: |
+      #     ssh ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} '
+      #       sudo docker stop playground; \
+      #       sudo docker rm playground; \
+      #       sudo docker run --name playground -ti -d --volume "`pwd`/apps/playground:/usr/share/nginx/html" nginx:alpine'
