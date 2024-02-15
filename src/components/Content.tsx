@@ -1,9 +1,3 @@
-import { Outlet } from "react-router-dom";
-
-export function Content() {
-  return (
-    <div className="Content">
-      <Outlet />
-    </div>
-  );
+export function Content({ children }: { children: React.ReactNode }) {
+  return <div className="Content">{children}</div>;
 }

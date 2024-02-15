@@ -1,13 +1,16 @@
 # This workflow will do a clean installation of node dependencies, cache/restore them, build the source code and run tests across different versions of node
 # For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-nodejs
 
-name: Node.js CI
+name: build and deployment
 
 on:
   push:
     branches: ["main"]
   pull_request:
     branches: ["main"]
+
+env:
+  app_name: playground
 
 jobs:
   build:
@@ -32,12 +35,16 @@ jobs:
       - name: upload
         run: |
           rsync -av --delete-before \
-            ./dist/ \
-            ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:apps/playground/
+            .next/standalone/ \
+            ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:apps/${{ env.app_name }}/
+          rsync -av \
+            .next/static/ \
+            ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:apps/${{ env.app_name }}/.next/static/
 
       - name: start container
         run: |
           ssh ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} '
-            sudo docker stop playground; \
-            sudo docker rm playground; \
-            sudo docker run --name playground -ti -d --volume "`pwd`/apps/playground:/usr/share/nginx/html" nginx:alpine'
+            sudo docker stop ${{ env.app_name }}; \
+            sudo docker rm ${{ env.app_name }}; \
+            sudo docker run --name ${{ env.app_name }} -ti -d --volume "`pwd`/apps/${{ env.app_name }}:/app" --workdir /app --expose 3000 node:18-alpine server.js
+          '
