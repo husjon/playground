@@ -1,0 +1,47 @@
+.dice {
+  width: 6rem;
+  aspect-ratio: 1/1;
+  background-color: bisque;
+  border-radius: 1rem;
+  position: relative;
+
+  .dots {
+    width: 1rem;
+    aspect-ratio: 1/1;
+    background-color: rgb(38, 20, 20);
+    border-radius: 100%;
+    position: absolute;
+  }
+
+  .dots-tl {
+    left: 0.85rem;
+    top: 0.85rem;
+  }
+  .dots-tr {
+    right: 0.85rem;
+    top: 0.85rem;
+  }
+  .dots-ml {
+    left: 0.85rem;
+    top: 50%;
+    transform: translateY(-50%);
+  }
+  .dots-mr {
+    right: 0.85rem;
+    top: 50%;
+    transform: translateY(-50%);
+  }
+  .dots-bl {
+    left: 0.85rem;
+    bottom: 0.85rem;
+  }
+  .dots-br {
+    right: 0.85rem;
+    bottom: 0.85rem;
+  }
+  .dots-mid {
+    top: 50%;
+    transform: translate(-50%, -50%);
+    left: 50%;
+  }
+}
